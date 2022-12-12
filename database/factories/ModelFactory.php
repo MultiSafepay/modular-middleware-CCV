@@ -1,6 +1,6 @@
 <?php
 
-namespace ModularTemplate\ModularTemplate\Database\Factories;
+namespace ModularCCV\ModularCCV\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

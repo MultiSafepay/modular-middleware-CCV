@@ -1,10 +1,10 @@
 <?php
 
-namespace ModularTemplate\ModularTemplate\Commands;
+namespace ModularCCV\ModularCCV\Commands;
 
 use Illuminate\Console\Command;
 
-class ModularTemplateCommand extends Command
+class ModularCCVCommand extends Command
 {
     public $signature = 'modular-middleware-template';
 

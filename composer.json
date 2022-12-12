@@ -30,13 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "ModularTemplate\\ModularTemplate\\": "src",
-            "ModularTemplate\\ModularTemplate\\Database\\Factories\\": "database/factories"
+            "ModularCCV\\ModularCCV\\": "src",
+            "ModularCCV\\ModularCCV\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ModularTemplate\\ModularTemplate\\Tests\\": "tests"
+            "ModularCCV\\ModularCCV\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -51,10 +51,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ModularTemplate\\ModularTemplate\\ModularTemplateServiceProvider"
+              "ModularCCVServiceProvider"
             ],
             "aliases": {
-                "ModularTemplate": "ModularTemplate\\ModularTemplate\\Facades\\ModularTemplate"
+                "ModularCCV": "ModularCCV\\ModularCCV\\Facades\\ModularCCV"
             }
         }
     },

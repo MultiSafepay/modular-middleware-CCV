@@ -1,5 +1,5 @@
 <?php
-namespace ModularTemplate\ModularTemplate\Controllers;
+namespace ModularCCV\ModularCCV\Controllers;
 
 use Illuminate\Routing\Controller;
 

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace ModularTemplate\ModularTemplate\Jobs;
+namespace ModularCCV\ModularCCV\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

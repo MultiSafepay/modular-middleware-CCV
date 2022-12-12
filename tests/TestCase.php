@@ -1,10 +1,10 @@
 <?php
 
-namespace ModularTemplate\ModularTemplate\Tests;
+namespace ModularCCV\ModularCCV\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ModularTemplate\ModularTemplate\ModularTemplateServiceProvider;
+use ModularCCV\ModularCCV\ModularCCVServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'ModularTemplate\\ModularTemplate\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'ModularCCV\\ModularCCV\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            ModularTemplateServiceProvider::class,
+            ModularCCVServiceProvider::class,
         ];
     }
 

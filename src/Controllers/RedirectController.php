@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ModularTemplate\ModularTemplate\Controllers;
+namespace ModularCCV\ModularCCV\Controllers;
 
 use App\Http\Controllers\Controller;
 

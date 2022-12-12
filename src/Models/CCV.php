@@ -1,10 +1,10 @@
 <?php
 
-namespace ModularTemplate\ModularTemplate\Models;
+namespace ModularCCV\ModularCCV\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Template extends Model
+class CCV extends Model
 {
     //Template Model functions here
 }

@@ -1,27 +1,27 @@
 <?php
 
-namespace ModularTemplate\ModularTemplate;
+namespace ModularCCV\ModularCCV;
 
 use Illuminate\Support\Facades\Config;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ModularTemplate\ModularTemplate\Commands\ModularTemplateCommand;
+use ModularCCV\ModularCCV\Commands\ModularCCVCommand;
 use function Sodium\add;
 
-class ModularTemplateServiceProvider extends PackageServiceProvider
+class ModularCCVServiceProvider extends PackageServiceProvider
 {
 
     public function boot(): void
     {
         //Load Custom routes into laravel
-        $this->loadRoutesFrom(__DIR__ . '/routes/template.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/ccv.php');
 
         //Enable custom Horizon supervisor
         Config::set(
-            'horizon.defaults.supervisor-template',
+            'horizon.defaults.supervisor-cvv',
             [
                 'connection' => 'redis',
-                'queue' => ['default','template-high','template-low'],
+                'queue' => ['default','ccv-high','ccv-low'],
                 'balance' => 'auto',
                 'maxProcesses' => 2,
                 'maxTime' => 0,
@@ -40,13 +40,13 @@ class ModularTemplateServiceProvider extends PackageServiceProvider
         //Publish the required files
         $this->publishes([
             //Config
-            __DIR__.'/../config/template.php' => config_path('template.php'),
+            __DIR__.'/../config/ccv.php' => config_path('ccv.php'),
             //Migrations
-            __DIR__.'/../database/migrations/create_modular_middleware_template_table.php.stub' => database_path('migrations/2022_01_31_101358_create_modular_middleware_template_table.php'),
+            __DIR__.'/../database/migrations/create_modular_middleware_ccv_table.php.stub' => database_path('migrations/2022_01_31_101358_create_modular_middleware_ccv_table.php'),
             //Blades
-            __DIR__.'/../resources/views/preference.blade.php' => resource_path('views/template/preference.blade.php'),
+            __DIR__.'/../resources/views/preference.blade.php' => resource_path('views/ccv/preference.blade.php'),
         ], 'modular-middleware');
 
-        $package->name('modular-middleware-template');
+        $package->name('modular-middleware-ccv');
     }
 }

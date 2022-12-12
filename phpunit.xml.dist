@@ -19,7 +19,7 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="ModularTemplate Test Suite">
+        <testsuite name="ModularCCV Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
