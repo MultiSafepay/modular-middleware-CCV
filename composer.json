@@ -1,12 +1,12 @@
 {
-    "name": "multisafepay/modular-middleware-template",
+    "name": "multisafepay/modular-middleware-ccv",
     "description": "A package for modular middleware",
     "keywords": [
         "modular-template",
         "laravel",
-        "modular-middleware-template"
+        "modular-middleware-ccv"
     ],
-    "homepage": "https://github.com/multisafepay/modular-middleware-template",
+    "homepage": "https://github.com/multisafepay/modular-middleware-CCV",
     "license": "MIT",
     "authors": [
         {
