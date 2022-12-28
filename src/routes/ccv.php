@@ -20,18 +20,18 @@ Route::group([
     Route::post('/uninstall', [InstallController::class,'uninstall'])->name('setup.uninstall');
 
     //Payment Route
-    Route::post('/payment', PaymentController::class)->name('payment');
+    //Route::post('/payment', PaymentController::class)->name('payment');
 
     //Redirect Route
-    Route::post('/webhook', RedirectController::class)->name('process.void');
+    //Route::post('/webhook', RedirectController::class)->name('process.void');
 
     //Notification Route
-    Route::post('/notification', NotificationController::class)->name('process.capture');
+    //Route::post('/notification', NotificationController::class)->name('process.capture');
 
     //Refund Route
-    Route::post('/refund', RefundController::class)->name('refund');
+    //Route::post('/refund', RefundController::class)->name('refund');
 
     //Webhook Route
-    Route::post('/webhook', WebhookController::class)->name('process.void');
+    //Route::post('/webhook', WebhookController::class)->name('process.void');
 
 });
