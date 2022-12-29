@@ -10,12 +10,13 @@ use ModularCCV\ModularCCV\Controllers\RefundController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'prefix' => 'CCV',
-    'as' => 'CCV.',
+    'prefix' => 'ccv',
+    'as' => 'ccv.',
     'middleware' => [SubstituteBindings::class]
 ], function () {
     //Setup Route
-    Route::post('/install', [InstallController::class,'install'])->name('setup.install');
+    Route::get('/install', [InstallController::class,'view'])->name('setup.install');
+    Route::put('/install', [InstallController::class,'install'])->name('setup.install');
 
     Route::post('/handshake', [InstallController::class,'handshake'])->name('setup.handshake');
 
