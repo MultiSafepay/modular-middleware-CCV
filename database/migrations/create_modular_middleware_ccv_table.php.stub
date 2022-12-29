@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('CCV', function (Blueprint $table) {
             $table->id();
-            $table->string('CCV_key');
-            $table->string('CCV_domain');
+            $table->string('public_key');
+            $table->string('secret_key');
+            $table->string('domain');
             $table->string('multisafepay_api_key')->nullable();
             $table->string('multisafepay_environment')->nullable();
             $table->timestamps();
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('templates');
+        Schema::dropIfExists('CCV');
     }
 };

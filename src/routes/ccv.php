@@ -17,6 +17,8 @@ Route::group([
     //Setup Route
     Route::post('/install', [InstallController::class,'install'])->name('setup.install');
 
+    Route::post('/handshake', [InstallController::class,'handshake'])->name('setup.handshake');
+
     Route::post('/uninstall', [InstallController::class,'uninstall'])->name('setup.uninstall');
 
     //Payment Route

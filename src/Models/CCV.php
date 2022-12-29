@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CCV extends Model
 {
-    //Template Model functions here
+    protected $fillable = ['public_key','secret_key','domain','multisafepay_api_key','multisafepay_environment'];
+
 }
