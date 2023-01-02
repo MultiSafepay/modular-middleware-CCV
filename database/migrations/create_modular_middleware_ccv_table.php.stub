@@ -6,13 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('CCV', function (Blueprint $table) {
+        Schema::create('ccv', function (Blueprint $table) {
             $table->id();
             $table->string('public_key');
             $table->string('secret_key');
             $table->string('domain');
+            $table->string('redirect_url');
             $table->string('multisafepay_api_key')->nullable();
             $table->string('multisafepay_environment')->nullable();
             $table->timestamps();
@@ -27,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('CCV');
+        Schema::dropIfExists('ccv');
     }
 };

@@ -15,7 +15,8 @@ Route::group([
     'middleware' => [SubstituteBindings::class]
 ], function () {
     //Setup Route
-    Route::get('/install', [InstallController::class,'view'])->name('setup.install');
+    Route::get('/install', [InstallController::class,'view'])->name('setup.install.view');
+
     Route::put('/install', [InstallController::class,'install'])->name('setup.install');
 
     Route::post('/handshake', [InstallController::class,'handshake'])->name('setup.handshake');
