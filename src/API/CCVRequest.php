@@ -5,6 +5,7 @@ namespace ModularCCV\ModularCCV\API;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use ModularCCV\ModularCCV\Models\CCV;
+use Illuminate\Support\Facades\Log;
 
 class CCVRequest
 {
@@ -43,6 +44,8 @@ class CCVRequest
             'body' => $data
         ]);
 
+        //Log::info("REQUEST RESPONSE:", [$request->getBody()->getContents()]);
+
         return json_decode($request->getBody()->getContents());
     }
 
@@ -54,6 +57,11 @@ class CCVRequest
     public function patchInstall($appId)
     {
         return $this->sendRequest('PATCH', '/api/rest/v1/apps/' . $appId, json_encode(['is_installed' => true]));
+    }
+
+    public function postPaymentMethods($appId, $paymentMethods)
+    {
+        return $this->sendRequest('POST', '/api/rest/v1/apps/' . $appId . '/apppsp/', json_encode($paymentMethods));
     }
 
     /**
