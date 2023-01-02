@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use ModularCCV\ModularCCV\Models\CCV;
-use Illuminate\Support\Facades\Http;
-use Carbon\Carbon;
 use ModularCCV\ModularCCV\API\CCVRequest;
 use ModularMultiSafepay\ModularMultiSafepay\MultiSafepay;
 
@@ -16,18 +14,20 @@ final class InstallController extends Controller
     public function view(Request $request)
     {
         $apiKey = $request->api_public;
-        return view('ccv.preference', compact('apiKey'));
+
+        return view('ccv.api', compact('apiKey'));
     }
 
     public function install(Request $request, MultiSafepay $multiSafepay)
     {
         Log::info('install request data', [$request->all()]);
         $ccv = CCV::where('public_key', $request['public_key'])->first();
-        $ccv->multisafepay_api_key = $request->api_key;
+        $ccv->multisafepay_api_key = $request['api_key'];
+        $ccv->multisafepay_environment = $request['environment'];
+
         $ccv->save();
-
+        
         $ccvRequest = new CCVRequest($ccv);
-
         $appId = $ccvRequest->getRemoteAppId()->items[0]->id;
         $ccvRequest->patchInstall($appId);
 
@@ -97,13 +97,17 @@ final class InstallController extends Controller
             $secretKey = $request['api_secret'];
             $domain = $request['api_root'];
             $redirect = $request['return_url'];
-
-            CCV::create([
-                'public_key' => $publicKey,
-                'secret_key' => $secretKey,
-                'domain' => $domain,
-                'redirect_url' => $redirect,
-            ]);
+            //check if domain already exist.
+            CCV::updateOrCreate(
+                [
+                    'domain' => $domain,
+                ],
+                [
+                    'public_key' => $publicKey,
+                    'secret_key' => $secretKey,
+                    'domain' => $domain,
+                    'redirect_url' => $redirect
+                ]);
             return;
         }
 

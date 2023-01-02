@@ -1,5 +1,5 @@
 
-@extends('Lightspeed.base')
+@extends('ccv.base')
 
 @section('content')
     @parent
@@ -30,6 +30,13 @@
                         <p class="block text-base font-medium text-gray-700 my-1 font-weight-bold">API Settings</p>
                         <label for="mspApiKey" class="font-weight-bold">MultiSafepay API key:</label>
                         <input type="text" class="form-control" id="mspApiKey" name="api_key" placeholder="Enter MSP API Key">
+                    </div>
+                    <div class="form-group pt-2">
+                        <label for="mspENV" class="font-weight-bold">Environment:</label>
+                        <select class="form-control" id="mspENV" name="environment">
+                            <option value="Live">Live</option>
+                            <option value="Test">Test</option>
+                        </select>
                     </div>
                     <div class="form-group pt-2">
                         <input type="hidden" class="form-control" id="mspApiKey" name="public_key" value="{{$apiKey}}">
