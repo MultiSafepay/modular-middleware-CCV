@@ -44,7 +44,10 @@ class ModularCCVServiceProvider extends PackageServiceProvider
             //Migrations
             __DIR__.'/../database/migrations/create_modular_middleware_ccv_table.php.stub' => database_path('migrations/2022_01_31_101358_create_modular_middleware_ccv_table.php'),
             //Blades
-            __DIR__.'/../resources/views/preference.blade.php' => resource_path('views/ccv/preference.blade.php'),
+            __DIR__ . '/../resources/views/base.blade.php' => resource_path('views/ccv/base.blade.php'),
+            __DIR__ . '/../resources/views/api.blade.php' => resource_path('views/ccv/api.blade.php'),
+            //Images
+            __DIR__.'/../resources/images/msp-logo-white.svg' => public_path('images/CCV/msp-logo-white.svg'),
         ], 'modular-middleware');
 
         $package->name('modular-middleware-ccv');
