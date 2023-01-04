@@ -130,6 +130,10 @@ final class InstallController extends Controller
     {
         Log::info('Uninstall request data', [$request->all()]);
 
+        $ccv = CCV::where('public_key', $request->api_public)->first();
+
+        $ccv->delete();
+
         return response("OK");
     }
 
