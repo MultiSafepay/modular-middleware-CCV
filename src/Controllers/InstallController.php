@@ -7,30 +7,83 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use ModularCCV\ModularCCV\Models\CCV;
 use ModularCCV\ModularCCV\API\CCVRequest;
+use ModularCCV\ModularCCV\Requests\InstallRequest;
+use ModularMultiSafepay\ModularMultiSafepay\MultiSafepay;
 
 final class InstallController extends Controller
 {
     public function view(Request $request)
     {
-        $apiKey = $request->api_public;
+        $publicKey = $request->api_public;
+        $ccv = CCV::where('public_key', $request->api_public)->first();
+        $apiKey = null;
+        $env = null;
 
-        return view('ccv.api', compact('apiKey'));
+        if ($ccv) {
+            $apiKey = $ccv->multisafepay_api_key;
+            $env = $ccv->multisafepay_environment;
+        }
+
+        return view('ccv.api', compact('publicKey', 'apiKey', 'env'));
     }
 
-    public function install(Request $request)
+    public function install(InstallRequest $request, MultiSafepay $multiSafepay)
     {
         Log::info('install request data', [$request->all()]);
         $ccv = CCV::where('public_key', $request['public_key'])->first();
-
         $ccv->multisafepay_api_key = $request['api_key'];
         $ccv->multisafepay_environment = $request['environment'];
 
         $ccv->save();
+        if ($request['update_paymethods']) {
+            $ccvRequest = new CCVRequest($ccv);
+            $appId = $ccvRequest->getRemoteAppId()->items[0]->id;
+            $ccvRequest->patchInstall($appId);
 
-        $request = new CCVRequest($ccv);
+            $paymentMethods = $multiSafepay->getPaymentMethods($ccv->multisafepay_api_key);
+            $ccvPaymentMethods = [];
+            $ccvPaymentMethods['name'] = "MultiSafepay";
+            $ccvPaymentMethods['description'] = "MultiSafepay Payment Service provider";
+            $ccvPaymentMethods['endpoint'] = route('ccv.payment');
 
-        $appId = $request->getRemoteAppId();
-        $request->patchInstall($appId->items[0]->id);
+            $allowedCurrencies = [
+                'EUR',
+                'CHF',
+                'USD',
+                'GBP',
+                'TRY',
+                'CAD',
+                'SRD',
+                'DKK',
+                'RON',
+                'SEK',
+            ];
+
+            foreach ($paymentMethods as $paymentMethod) {
+                $currencies = array_intersect($allowedCurrencies, $paymentMethod->allowedCurrencies);
+                $ccvPaymentMethod = [];
+                $ccvPaymentMethod['id'] = $paymentMethod->id;
+                $ccvPaymentMethod['name'] = $paymentMethod->name;
+                $ccvPaymentMethod['icon'] = $paymentMethod->iconUrl;
+                $ccvPaymentMethod['type'] = 'postsale';
+                $ccvPaymentMethod['currencies'] = array_values($currencies);
+                $ccvPaymentMethod['required_fields'] = [];
+                $ccvPaymentMethod['issuers'] = [];
+
+    //            if ($paymentMethod['hasComponent'])
+    //            {
+    //                $ccvPaymentMethod['required_fields'] = $paymentMethod['currencies'];
+    //                $ccvPaymentMethod['issuers'] = [
+    //                    'id' => '',
+    //                    'name' => ''
+    //                ];
+    //            }
+                $ccvPaymentMethods['paymethods'][] = $ccvPaymentMethod;
+            }
+
+            Log::info('paymentMethods', [$ccvPaymentMethods]);
+            $ccvRequest->postPaymentMethods($appId, $ccvPaymentMethods);
+        }
 
         return redirect()->to($ccv->redirect_url);
     }
