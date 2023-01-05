@@ -28,18 +28,18 @@ class PaymentController extends Controller
 
         ////$ccvRequest = new CCVRequest($ccv);
 
-        $order = $request->all();
+        $order = json_decode($request->getContent(), true);
 
         $shipping = $order['shipping_address'];
 
-        if ($shipping['first_name'] === null && $shipping['last_name'] === null){
+        if (empty($shipping['address_line']) && empty($shipping['city'])){
             $shipping = $order['billing_address'];
         }
 
         $delivery = new DeliveryInfo(
             $shipping['first_name'],
             $shipping['last_name'],
-            $shipping['address_line'],
+            $shipping['street'],
             $shipping['house_number'],
             $shipping['postal_code'],
             $shipping['city'],
@@ -55,7 +55,7 @@ class PaymentController extends Controller
             $billing['phone_number'],
             $billing['email'],
             $billing['gender'] ?? "",
-            $billing['address_line'],
+            $billing['street'],
             $billing['house_number'],
             $billing['postal_code'],
             $billing['city'],
@@ -68,7 +68,7 @@ class PaymentController extends Controller
             strtoupper($order['currency']),
             $order['method'],
             'redirect',
-            'MW' . $order['order_id'],
+            'M_W' . $order['order_id'],
             new PaymentOptions($order['return_url'], $order['return_url'], route('ccv.notification'), true, true),
             $customer,
             $delivery
