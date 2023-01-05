@@ -3,9 +3,12 @@
 namespace ModularCCV\ModularCCV\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CCV extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'public_key',
         'secret_key',
