@@ -64,6 +64,14 @@ class CCVRequest
         return $this->sendRequest('POST', '/api/rest/v1/apps/' . $appId . '/apppsp/', json_encode($paymentMethods));
     }
 
+    public function getOrder($orderID){
+        return $this->sendRequest('GET', '/api/rest/v1/orders/'.$orderID);
+    }
+
+    public function getOrderRows($orderID){
+        return $this->sendRequest('GET', '/api/rest/v1/orders/'. $orderID .'/orderrows/');
+    }
+
     /**
      * @param $method
      * @param $url

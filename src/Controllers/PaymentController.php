@@ -1,10 +1,81 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ModularCCV\ModularCCV\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use ModularCCV\ModularCCV\API\CCVRequest;
+use ModularCCV\ModularCCV\Models\CCV;
+use ModularMultiSafepay\ModularMultiSafepay\MultiSafepay;
+use ModularMultiSafepay\ModularMultiSafepay\Order\CustomerInfo;
+use ModularMultiSafepay\ModularMultiSafepay\Order\DeliveryInfo;
+use ModularMultiSafepay\ModularMultiSafepay\Order\Item;
+use ModularMultiSafepay\ModularMultiSafepay\Order\Order;
+use ModularMultiSafepay\ModularMultiSafepay\Order\PaymentOptions;
+use ModularMultiSafepay\ModularMultiSafepay\Order\ShoppingCart;
 
 class PaymentController extends Controller
 {
-    //Platform payment function here
+    public function __invoke()
+    {
+        // TODO: Implement __invoke() method.
+    }
+
+    public function createTransaction(Request $request,MultiSafepay $multiSafepay){
+
+        $ccv = CCV::where('public_key',$request->header('x-public'))->first();
+
+        ////$ccvRequest = new CCVRequest($ccv);
+
+        $order = $request->all();
+
+        $shipping = $order['shipping_address'];
+
+        if ($shipping['first_name'] === null && $shipping['last_name'] === null){
+            $shipping = $order['billing_address'];
+        }
+
+        $delivery = new DeliveryInfo(
+            $shipping['first_name'],
+            $shipping['last_name'],
+            $shipping['address_line'],
+            $shipping['house_number'],
+            $shipping['postal_code'],
+            $shipping['city'],
+            $shipping['country'],
+        );
+
+        $billing = $order['billing_address'];
+
+        $customer = new CustomerInfo(
+            $billing['first_name'],
+            $billing['last_name'],
+            $order['date_of_birth'] ?? "",
+            $billing['phone_number'],
+            $billing['email'],
+            $billing['gender'] ?? "",
+            $billing['address_line'],
+            $billing['house_number'],
+            $billing['postal_code'],
+            $billing['city'],
+            $billing['country'],
+        );
+
+        $newOrder = new Order(
+            strval($order['order_id']),
+            (int)($order['amount'] * 100),
+            strtoupper($order['currency']),
+            $order['method'],
+            'redirect',
+            'MW' . $order['order_id'],
+            new PaymentOptions($order['return_url'], $order['return_url'], route('ccv.notification'), true, true),
+            $customer,
+            $delivery
+        );
+
+        $url = $multiSafepay->createTransaction($ccv->multisafepay_api_key, $newOrder);
+
+        return response()->json(['pay_url' => $url], 201);
+    }
 }
